@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:portfolio/app/core/constants/apptheme.dart';
 
 import 'app/routes/app_pages.dart';
 
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Application",
       initialRoute: AppPages.INITIAL,
+      theme: AppTheme.darkTheme, 
       getPages: AppPages.routes,
     );
   }

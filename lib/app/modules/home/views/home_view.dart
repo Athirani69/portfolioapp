@@ -3,6 +3,7 @@ import 'package:portfolio/app/core/responsive/responsive.dart';
 import 'package:portfolio/app/modules/home/widgets/about_section.dart';
 import 'package:portfolio/app/modules/home/widgets/contact_section.dart';
 import 'package:portfolio/app/modules/home/widgets/project_section.dart';
+import 'package:portfolio/app/modules/home/widgets/experience_section.dart'; 
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -13,15 +14,15 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final scrollController = ScrollController();
-
   final aboutKey = GlobalKey();
+  final experienceKey = GlobalKey(); // new key
   final projectsKey = GlobalKey();
   final contactKey = GlobalKey();
 
   void scrollTo(GlobalKey key) {
     Scrollable.ensureVisible(
       key.currentContext!,
-      duration: const Duration(milliseconds: 700),
+      duration: const Duration(milliseconds: 600),
       curve: Curves.easeInOutCubic,
     );
   }
@@ -29,37 +30,26 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: const Color(0xFFF7F9FC),
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 3,
         title: const Text(
-          'My Portfolio',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          'Athirani C P',
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.w700,
+            fontSize: 22,
+          ),
         ),
-        elevation: 2,
+        centerTitle: false,
         actions: ResponsiveLayout.isDesktop(context)
             ? [
-                TextButton(
-                  onPressed: () => scrollTo(aboutKey),
-                  child: const Text(
-                    'About',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => scrollTo(projectsKey),
-                  child: const Text(
-                    'Projects',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => scrollTo(contactKey),
-                  child: const Text(
-                    'Contact',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-                const SizedBox(width: 16),
+                _navItem('About', () => scrollTo(aboutKey)),
+                _navItem('Experience', () => scrollTo(experienceKey)), // new
+                _navItem('Projects', () => scrollTo(projectsKey)),
+                _navItem('Contact', () => scrollTo(contactKey)),
+                const SizedBox(width: 20),
               ]
             : null,
       ),
@@ -69,35 +59,20 @@ class _HomeViewState extends State<HomeView> {
                 padding: EdgeInsets.zero,
                 children: [
                   DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                    ),
+                    decoration: BoxDecoration(color: Colors.blueAccent[700]),
                     child: const Text(
                       'Menu',
-                      style: TextStyle(color: Colors.white, fontSize: 22),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  ListTile(
-                    title: const Text('About'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      scrollTo(aboutKey);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('Projects'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      scrollTo(projectsKey);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('Contact'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      scrollTo(contactKey);
-                    },
-                  ),
+                  _drawerItem('About', () => scrollTo(aboutKey)),
+                  _drawerItem('Experience', () => scrollTo(experienceKey)), // new
+                  _drawerItem('Projects', () => scrollTo(projectsKey)),
+                  _drawerItem('Contact', () => scrollTo(contactKey)),
                 ],
               ),
             )
@@ -110,46 +85,47 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // 🧩 About Section
-                Container(
-                  key: aboutKey,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 60,
-                    horizontal: 20,
-                  ),
-                  child: const AboutSection(),
-                ),
-
-                const SizedBox(height: 40),
-
-                // 🧩 Projects Section
-                Container(
-                  key: projectsKey,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 60,
-                    horizontal: 20,
-                  ),
-                  child: const ProjectsSection(),
-                ),
-
-                const SizedBox(height: 40),
-
-                // 🧩 Contact Section
-                Container(
-                  key: contactKey,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 60,
-                    horizontal: 20,
-                  ),
-                  child: const ContactSection(),
-                ),
-
-                const SizedBox(height: 20),
+                _section(aboutKey, const AboutSection()),
+                _section(experienceKey, const ExperienceSection()), // new
+                _section(projectsKey, ProjectsSection()),
+                _section(contactKey, const ContactSection()),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _navItem(String title, VoidCallback onPressed) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(
+        title,
+        style: const TextStyle(
+          color: Colors.black87,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  Widget _drawerItem(String title, VoidCallback onTap) {
+    return ListTile(
+      title: Text(title, style: const TextStyle(fontSize: 16)),
+      onTap: () {
+        Navigator.pop(context);
+        onTap();
+      },
+    );
+  }
+
+  Widget _section(GlobalKey key, Widget child) {
+    return Container(
+      key: key,
+      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+      child: child,
     );
   }
 }

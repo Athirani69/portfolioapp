@@ -14,8 +14,8 @@ class CustomTextfield extends StatefulWidget {
     this.validator,
     this.isPassword = false,
     this.prefixIcon,
-    this.suffixIcon, // 👈 NEW
-    this.onSuffixTap, // 👈 NEW
+    this.suffixIcon, 
+    this.onSuffixTap, 
     this.initialValue,
     this.labelText,
   });

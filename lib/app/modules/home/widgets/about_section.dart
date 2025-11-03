@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:portfolio/app/core/constants/appimages.dart';
 import 'package:portfolio/app/data/resume_data.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -196,10 +198,14 @@ class AboutSection extends StatelessWidget {
             alignment: WrapAlignment.center,
             spacing: 20,
             children: [
-              _socialIcon(Icons.linked_camera, ResumeData.linkedin),
-              _socialIcon(Icons.code, ResumeData.github),
-              _socialIcon(Icons.mail_outline, 'mailto:${ResumeData.email}'),
-              _socialIcon(Icons.call, 'tel:${ResumeData.phone}'),
+              _socialIcon(AppImages.linkedin, ResumeData.linkedin, size: 20),
+              _socialIcon(AppImages.git, ResumeData.github, size: 20),
+              _socialIcon(
+                AppImages.email,
+                'mailto:${ResumeData.email}',
+                size: 20,
+              ),
+              _socialIcon(AppImages.call, 'tel:${ResumeData.phone}', size: 20),
             ],
           ),
           const SizedBox(height: 40),
@@ -274,7 +280,7 @@ class AboutSection extends StatelessWidget {
     );
   }
 
-  Widget _socialIcon(IconData icon, String url) {
+  Widget _socialIcon(String imageAsset, String url, {double size = 24}) {
     return InkWell(
       onTap: () async {
         final uri = Uri.parse(url);
@@ -283,12 +289,17 @@ class AboutSection extends StatelessWidget {
         }
       },
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(color: Colors.blueAccent, width: 1.5),
         ),
-        child: Icon(icon, color: Colors.blueAccent, size: 26),
+        child: Image.asset(
+          imageAsset,
+          width: size,
+          height: size,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

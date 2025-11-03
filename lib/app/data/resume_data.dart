@@ -39,7 +39,7 @@ class ResumeData {
   ];
 
   // Skills
- static const skills = [
+  static const skills = [
     {"name": "Windows", "icon": Icons.window},
     {"name": "Linux", "icon": Icons.laptop},
     {"name": "Dart", "icon": Icons.code},
@@ -56,7 +56,6 @@ class ResumeData {
     {"name": "MS Excel", "icon": Icons.grid_3x3},
     {"name": "MS PowerPoint", "icon": Icons.slideshow},
   ];
-
 
   // Certificates
   static const certificates = [
@@ -111,6 +110,8 @@ class ResumeData {
     },
     {
       "name": "CartWave",
+      "period": "02/2024 – 05/2024",
+      "location": "Kannur, India",
       "description":
           "An e-commerce app built with Flutter and Firebase featuring admin and user modules. Supports real-time cart updates, authentication, and product management.",
       "tech": "Flutter, Firebase",

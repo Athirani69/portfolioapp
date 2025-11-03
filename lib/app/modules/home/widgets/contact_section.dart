@@ -8,36 +8,69 @@ class ContactSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center, // center everything
       children: [
-        const Text('Contact', style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
+        const Text(
+          'Contact',
+          style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 20),
         Text('Let’s connect!', style: Theme.of(context).textTheme.bodyLarge),
-        const SizedBox(height: 16),
-        SelectableText('📧 ${ResumeData.email}'),
-        SelectableText('📞 ${ResumeData.phone}'),
-        const SizedBox(height: 16),
-        Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 16,
+        const SizedBox(height: 40), // more spacing for balance
+        // Email and Phone
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildLink('LinkedIn', ResumeData.linkedin),
-            _buildLink('GitHub', ResumeData.github),
+            _contactItem(
+              Icons.email,
+              ResumeData.email,
+              'mailto:${ResumeData.email}',
+            ),
+            const SizedBox(width: 40),
+            _contactItem(
+              Icons.phone,
+              ResumeData.phone,
+              'tel:${ResumeData.phone}',
+            ),
+          ],
+        ),
+        const SizedBox(height: 30),
+        // Social links
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _contactItem(Icons.linked_camera, 'LinkedIn', ResumeData.linkedin),
+            const SizedBox(width: 40),
+            _contactItem(Icons.code, 'GitHub', ResumeData.github),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildLink(String title, String url) {
-    return TextButton.icon(
-      icon: const Icon(Icons.link),
-      label: Text(title),
-      onPressed: () async {
+  Widget _contactItem(IconData icon, String label, String url) {
+    return InkWell(
+      onTap: () async {
         final uri = Uri.parse(url);
         if (await canLaunchUrl(uri)) {
           await launchUrl(uri, mode: LaunchMode.externalApplication);
         }
       },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 20, color: Colors.black87),
+          const SizedBox(width: 8),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.black87,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
